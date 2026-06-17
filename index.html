@@ -1,170 +1,165 @@
-<!doctype html>
+<!DOCTYPE HTML>
 <html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TMLGBD Dev Hub · git.loc.cc</title>
-  <meta name="description" content="TMLGBD Dev Hub：项目、工具、代码片段与部署入口。">
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #020617;
-      --panel: rgba(15, 23, 42, .78);
-      --panel-2: rgba(30, 41, 59, .72);
-      --line: rgba(148, 163, 184, .22);
-      --text: #e5e7eb;
-      --muted: #94a3b8;
-      --blue: #60a5fa;
-      --cyan: #22d3ee;
-      --green: #34d399;
-      --amber: #fbbf24;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top left, rgba(37, 99, 235, .38), transparent 34rem),
-        radial-gradient(circle at top right, rgba(8, 145, 178, .28), transparent 30rem),
-        linear-gradient(135deg, #020617 0%, #0f172a 52%, #020617 100%);
-      color: var(--text);
-    }
-    a { color: inherit; text-decoration: none; }
-    .wrap { width: min(1160px, calc(100% - 32px)); margin: 0 auto; padding: 36px 0 44px; }
-    header {
-      display: grid;
-      grid-template-columns: 1.3fr .7fr;
-      gap: 18px;
-      align-items: stretch;
-      margin-bottom: 18px;
-    }
-    .hero, .status, .card, .toolbox {
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      background: var(--panel);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, .36);
-      backdrop-filter: blur(16px);
-    }
-    .hero { padding: 34px; overflow: hidden; position: relative; }
-    .hero::after {
-      content: "git";
-      position: absolute;
-      right: -12px;
-      bottom: -40px;
-      font-size: 180px;
-      font-weight: 900;
-      letter-spacing: -.12em;
-      color: rgba(96, 165, 250, .06);
-      pointer-events: none;
-    }
-    .eyebrow { display: inline-flex; gap: 8px; align-items: center; color: #bfdbfe; background: rgba(37, 99, 235, .22); border: 1px solid rgba(147, 197, 253, .18); border-radius: 999px; padding: 8px 12px; font-size: 13px; }
-    h1 { margin: 22px 0 12px; font-size: clamp(42px, 9vw, 86px); line-height: .92; letter-spacing: -.07em; }
-    .lead { max-width: 660px; color: #cbd5e1; font-size: clamp(16px, 2.5vw, 20px); line-height: 1.75; margin: 0; }
-    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
-    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 14px; border-radius: 14px; border: 1px solid var(--line); background: rgba(15, 23, 42, .72); color: #dbeafe; font-weight: 650; }
-    .btn.primary { background: linear-gradient(135deg, #2563eb, #0891b2); border-color: transparent; color: white; }
-    .status { padding: 24px; display: grid; gap: 14px; }
-    .status h2, .section-title { margin: 0; font-size: 18px; letter-spacing: -.02em; }
-    .metric { padding: 14px; border-radius: 18px; background: rgba(2, 6, 23, .42); border: 1px solid rgba(148, 163, 184, .14); }
-    .metric b { display: block; font-size: 14px; color: var(--muted); margin-bottom: 6px; }
-    .metric span { color: #e2e8f0; font-weight: 750; }
-    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px; }
-    .card { min-height: 174px; padding: 22px; transition: transform .18s ease, border-color .18s ease, background .18s ease; }
-    .card:hover { transform: translateY(-3px); border-color: rgba(96, 165, 250, .46); background: rgba(30, 41, 59, .84); }
-    .icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 15px; background: rgba(96, 165, 250, .16); color: #bfdbfe; font-size: 21px; margin-bottom: 18px; }
-    .card h3 { margin: 0 0 8px; font-size: 19px; letter-spacing: -.03em; }
-    .card p { margin: 0; color: var(--muted); line-height: 1.65; font-size: 14.5px; }
-    .card small { display: inline-flex; margin-top: 14px; color: #93c5fd; font-weight: 700; }
-    .toolbox { margin-top: 14px; padding: 24px; }
-    .tools { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
-    .chip { padding: 10px 12px; border-radius: 999px; background: rgba(2, 6, 23, .46); border: 1px solid rgba(148, 163, 184, .16); color: #cbd5e1; font-size: 14px; }
-    .terminal { margin-top: 14px; padding: 18px; border-radius: 20px; background: #020617; border: 1px solid rgba(148, 163, 184, .16); color: #a7f3d0; overflow: auto; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; line-height: 1.65; }
-    footer { color: #64748b; text-align: center; margin-top: 28px; font-size: 13px; }
-    @media (max-width: 860px) {
-      header, .grid { grid-template-columns: 1fr; }
-      .wrap { width: min(100% - 24px, 680px); padding-top: 18px; }
-      .hero, .status, .card, .toolbox { border-radius: 22px; }
-      .hero { padding: 26px; }
-      .hero::after { font-size: 120px; }
-    }
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <header>
-      <section class="hero">
-        <div class="eyebrow">⚡ GitHub Pages · Static Dev Hub</div>
-        <h1>TMLGBD<br>Dev Hub</h1>
-        <p class="lead">一个轻量开发入口：聚合项目、静态工具、部署笔记和常用命令。适合放在 <strong>git.loc.cc</strong>，长期稳定保活。</p>
-        <div class="actions">
-          <a class="btn primary" href="https://github.com/" target="_blank" rel="noreferrer">打开 GitHub</a>
-          <a class="btn" href="https://nav.tmlgbd.cc.cd/" target="_blank" rel="noreferrer">主导航</a>
-          <a class="btn" href="https://tmlgbd.cc.cd/" target="_blank" rel="noreferrer">TMLGBD</a>
+  <head>
+    <title>git.loc.cc · TMLGBD Dev Hub</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="description" content="TMLGBD Dev Hub：项目、工具、部署笔记、Git 速查与静态镜像入口。" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+  </head>
+  <body class="is-preload">
+    <div id="wrapper">
+      <header id="header" class="alt">
+        <a href="/" class="logo"><strong>git.loc.cc</strong> <span>Dev Hub</span></a>
+        <nav><a href="#menu">Menu</a></nav>
+      </header>
+
+      <nav id="menu">
+        <ul class="links">
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#tools">Tools</a></li>
+          <li><a href="#snippets">Snippets</a></li>
+          <li><a href="https://nav.tmlgbd.cc.cd/">Main Nav</a></li>
+          <li><a href="https://coc.loc.cc/">COC Mirror</a></li>
+        </ul>
+        <ul class="actions stacked">
+          <li><a href="https://github.com/" class="button primary fit">Open GitHub</a></li>
+          <li><a href="https://tmlgbd.cc.cd/" class="button fit">TMLGBD</a></li>
+        </ul>
+      </nav>
+
+      <section id="banner" class="major">
+        <div class="inner">
+          <header class="major">
+            <h1>TMLGBD Dev Hub</h1>
+          </header>
+          <div class="content">
+            <p>项目入口、开发工具、部署笔记与 Git 速查。<br />
+            这是适合长期挂在 git.loc.cc 的静态开发主页。</p>
+            <ul class="actions">
+              <li><a href="#projects" class="button next scrolly">进入入口</a></li>
+            </ul>
+          </div>
         </div>
       </section>
-      <aside class="status">
-        <h2>Runtime Status</h2>
-        <div class="metric"><b>Hosting</b><span>GitHub Pages / Fastly CDN</span></div>
-        <div class="metric"><b>Domain</b><span>git.loc.cc</span></div>
-        <div class="metric"><b>Mode</b><span>Static HTML · No backend</span></div>
-        <div class="metric"><b>Purpose</b><span>Dev links / tools / docs</span></div>
-      </aside>
-    </header>
 
-    <main class="grid">
-      <a class="card" href="https://github.com/" target="_blank" rel="noreferrer">
-        <div class="icon">⌘</div>
-        <h3>Projects</h3>
-        <p>代码仓库、Worker 项目、APK 工程、脚本和公开发布物的统一入口。</p>
-        <small>Open projects →</small>
-      </a>
-      <a class="card" href="https://jsonformatter.org/" target="_blank" rel="noreferrer">
-        <div class="icon">{ }</div>
-        <h3>Dev Tools</h3>
-        <p>JSON、JWT、Base64、Hash、时间戳、URL 编解码等纯前端工具集合。</p>
-        <small>Open tools →</small>
-      </a>
-      <a class="card" href="https://nav.tmlgbd.cc.cd/" target="_blank" rel="noreferrer">
-        <div class="icon">◎</div>
-        <h3>Service Index</h3>
-        <p>跳转到主导航，访问图床、短链、邮箱、额度查询和其他公开服务。</p>
-        <small>Open nav →</small>
-      </a>
-      <a class="card" href="https://docs.github.com/en/pages" target="_blank" rel="noreferrer">
-        <div class="icon">▣</div>
-        <h3>Deploy Notes</h3>
-        <p>记录 GitHub Pages、Cloudflare、NodeLoc DNS 等部署和保活方案。</p>
-        <small>Read docs →</small>
-      </a>
-      <a class="card" href="https://git-scm.com/docs" target="_blank" rel="noreferrer">
-        <div class="icon">⎇</div>
-        <h3>Git Cheatsheet</h3>
-        <p>常用 Git 命令、分支、回滚、标签、远端操作和故障处理速查。</p>
-        <small>Open reference →</small>
-      </a>
-      <a class="card" href="https://coc.loc.cc/" target="_blank" rel="noreferrer">
-        <div class="icon">◈</div>
-        <h3>Static Mirror</h3>
-        <p>访问 coc.loc.cc 的静态导航镜像，作为备用入口和域名保活页。</p>
-        <small>Open mirror →</small>
-      </a>
-    </main>
+      <div id="main">
+        <section id="projects" class="tiles">
+          <article>
+            <span class="image"><img src="images/pic01.jpg" alt="" /></span>
+            <header class="major">
+              <h3><a href="https://github.com/" class="link">Projects</a></h3>
+              <p>GitHub 仓库、Worker 项目、APK 工程与脚本发布</p>
+            </header>
+          </article>
+          <article id="tools">
+            <span class="image"><img src="images/pic02.jpg" alt="" /></span>
+            <header class="major">
+              <h3><a href="https://jsonformatter.org/" class="link">Dev Tools</a></h3>
+              <p>JSON、JWT、Base64、Hash、URL、时间戳工具入口</p>
+            </header>
+          </article>
+          <article>
+            <span class="image"><img src="images/pic03.jpg" alt="" /></span>
+            <header class="major">
+              <h3><a href="https://nav.tmlgbd.cc.cd/" class="link">Service Index</a></h3>
+              <p>TMLGBD 主导航、图床、短链、邮箱、额度查询</p>
+            </header>
+          </article>
+          <article>
+            <span class="image"><img src="images/pic04.jpg" alt="" /></span>
+            <header class="major">
+              <h3><a href="https://docs.github.com/en/pages" class="link">Deploy Notes</a></h3>
+              <p>GitHub Pages、NodeLoc DNS、Cloudflare 部署笔记</p>
+            </header>
+          </article>
+          <article>
+            <span class="image"><img src="images/pic05.jpg" alt="" /></span>
+            <header class="major">
+              <h3><a href="https://git-scm.com/docs" class="link">Git Cheatsheet</a></h3>
+              <p>常用 Git 命令、回滚、分支、标签和远端操作</p>
+            </header>
+          </article>
+          <article>
+            <span class="image"><img src="images/pic06.jpg" alt="" /></span>
+            <header class="major">
+              <h3><a href="https://coc.loc.cc/" class="link">Static Mirror</a></h3>
+              <p>coc.loc.cc 静态导航镜像，备用入口与域名保活</p>
+            </header>
+          </article>
+        </section>
 
-    <section class="toolbox">
-      <h2 class="section-title">Command Snippets</h2>
-      <div class="tools">
-        <span class="chip">git status</span>
-        <span class="chip">git log --oneline</span>
-        <span class="chip">git switch -c feature</span>
-        <span class="chip">git restore --staged .</span>
-        <span class="chip">git reset --soft HEAD~1</span>
-        <span class="chip">git tag v1.0.0</span>
+        <section id="snippets">
+          <div class="inner">
+            <header class="major">
+              <h2>Command Snippets</h2>
+            </header>
+            <p>常用命令保留在首页，手机上也能快速复制参考。</p>
+            <div class="table-wrapper">
+              <table>
+                <tbody>
+                  <tr><td>查看状态</td><td><code>git status</code></td></tr>
+                  <tr><td>提交更新</td><td><code>git add . && git commit -m "ship update"</code></td></tr>
+                  <tr><td>推送主分支</td><td><code>git push origin main</code></td></tr>
+                  <tr><td>撤销暂存</td><td><code>git restore --staged .</code></td></tr>
+                  <tr><td>回退提交</td><td><code>git reset --soft HEAD~1</code></td></tr>
+                  <tr><td>GitHub Pages A</td><td><code>185.199.108.153 / 109.153 / 110.153 / 111.153</code></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <ul class="actions">
+              <li><a href="https://github.com/" class="button primary">GitHub</a></li>
+              <li><a href="https://nav.tmlgbd.cc.cd/" class="button">Main Nav</a></li>
+              <li><a href="https://coc.loc.cc/" class="button">COC Mirror</a></li>
+            </ul>
+          </div>
+        </section>
       </div>
-      <div class="terminal">$ git add .<br>$ git commit -m "ship update"<br>$ git push origin main<br><br># Pages custom domain<br>A @ 185.199.108.153<br>A @ 185.199.109.153<br>A @ 185.199.110.153<br>A @ 185.199.111.153</div>
-    </section>
 
-    <footer>git.loc.cc · TMLGBD Dev Hub · Static page deployed on GitHub Pages</footer>
-  </div>
-</body>
+      <section id="contact">
+        <div class="inner">
+          <section>
+            <header class="major"><h2>About</h2></header>
+            <p>git.loc.cc 是静态开发入口页。动态服务、后台管理和 API 不放在这里；这里只承载公开入口、工具链接和部署说明。</p>
+          </section>
+          <section class="split">
+            <section>
+              <div class="contact-method">
+                <span class="icon solid alt fa-code"></span>
+                <h3>Hosting</h3>
+                <span>GitHub Pages · Static HTML</span>
+              </div>
+            </section>
+            <section>
+              <div class="contact-method">
+                <span class="icon solid alt fa-globe"></span>
+                <h3>Domain</h3>
+                <span>NodeLoc DNS → GitHub Pages</span>
+              </div>
+            </section>
+          </section>
+        </div>
+      </section>
+
+      <footer id="footer">
+        <div class="inner">
+          <ul class="icons">
+            <li><a href="https://github.com/" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+          </ul>
+          <ul class="copyright">
+            <li>&copy; git.loc.cc</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
 </html>
