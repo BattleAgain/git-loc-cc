@@ -32,7 +32,8 @@
         <ul class="links">
           <li><a href="#projects">Projects</a></li>
           <li><a href="#tools">Tools</a></li>
-          <li><a href="#snippets">Snippets</a></li>
+          <li><a href="#snippets">Toolkit</a></li>
+          <li><a href="#workflow">Workflow</a></li>
           <li><a href="https://nav.tmlgbd.cc.cd/">Main Nav</a></li>
           <li><a href="https://coc.loc.cc/">COC Mirror</a></li>
         </ul>
@@ -101,21 +102,83 @@
               <p>coc.loc.cc 静态导航镜像，备用入口与域名保活</p>
             </header>
           </article>
+          <article>
+            <span class="image"><img src="images/pic07.jpg" alt="" /></span>
+            <header class="major">
+              <h3><a href="https://jwt.io/" class="link">JWT Lab</a></h3>
+              <p>JWT 解码、Header/Payload 检查和接口调试辅助</p>
+            </header>
+          </article>
+          <article>
+            <span class="image"><img src="images/pic08.jpg" alt="" /></span>
+            <header class="major">
+              <h3><a href="https://regex101.com/" class="link">Regex Lab</a></h3>
+              <p>正则测试、日志匹配、规则验证和文本处理</p>
+            </header>
+          </article>
+          <article>
+            <span class="image"><img src="images/pic09.jpg" alt="" /></span>
+            <header class="major">
+              <h3><a href="https://httpie.io/app" class="link">HTTP Client</a></h3>
+              <p>接口请求、Header 检查、Webhook 和 API 调试</p>
+            </header>
+          </article>
+          <article>
+            <span class="image"><img src="images/pic10.jpg" alt="" /></span>
+            <header class="major">
+              <h3><a href="https://crontab.guru/" class="link">Cron Helper</a></h3>
+              <p>定时任务表达式、计划检查和自动化任务参考</p>
+            </header>
+          </article>
+          <article>
+            <span class="image"><img src="images/pic11.jpg" alt="" /></span>
+            <header class="major">
+              <h3><a href="https://www.ssllabs.com/ssltest/" class="link">SSL Check</a></h3>
+              <p>证书、TLS 配置、HTTPS 状态和域名安全检查</p>
+            </header>
+          </article>
+          <article>
+            <span class="image"><img src="images/pic04.jpg" alt="" /></span>
+            <header class="major">
+              <h3><a href="https://developers.cloudflare.com/workers/" class="link">Workers Docs</a></h3>
+              <p>Cloudflare Workers、KV、D1、R2 与边缘部署文档</p>
+            </header>
+          </article>
         </section>
 
         <section id="snippets">
           <div class="inner">
             <header class="major">
-              <h2>Command Snippets</h2>
+              <h2>Toolkit</h2>
             </header>
-            <p>常用命令保留在首页，手机上也能快速复制参考。</p>
+            <p>这里放真正会经常点开的开发工具，不再展示 DNS IP 这种一次性配置。</p>
             <div class="snippet-grid">
-              <div class="snippet-card"><h3>查看状态</h3><code>git status</code></div>
-              <div class="snippet-card"><h3>提交更新</h3><code>git add . && git commit -m "ship update"</code></div>
-              <div class="snippet-card"><h3>推送主分支</h3><code>git push origin main</code></div>
-              <div class="snippet-card"><h3>撤销暂存</h3><code>git restore --staged .</code></div>
-              <div class="snippet-card"><h3>回退提交</h3><code>git reset --soft HEAD~1</code></div>
-              <div class="snippet-card"><h3>GitHub Pages A</h3><code>185.199.108.153 / 109.153 / 110.153 / 111.153</code></div>
+              <div class="snippet-card"><h3>JSON / Formatter</h3><code>格式化、压缩、Diff、转义和接口响应检查</code></div>
+              <div class="snippet-card"><h3>JWT / Token</h3><code>解码 Header / Payload，快速检查过期时间和声明</code></div>
+              <div class="snippet-card"><h3>Regex / Text</h3><code>正则验证、日志提取、批量替换和文本清洗</code></div>
+              <div class="snippet-card"><h3>HTTP / Webhook</h3><code>测试 API、Header、状态码、回调与跨域问题</code></div>
+              <div class="snippet-card"><h3>SSL / DNS</h3><code>检查证书、解析、CNAME、A 记录和 HTTPS 状态</code></div>
+              <div class="snippet-card"><h3>Cron / Schedule</h3><code>定时表达式、自动化任务和周期运行计划</code></div>
+            </div>
+            <ul class="actions">
+              <li><a href="https://jsonformatter.org/" class="button primary">JSON Tools</a></li>
+              <li><a href="https://jwt.io/" class="button">JWT</a></li>
+              <li><a href="https://regex101.com/" class="button">Regex</a></li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="workflow">
+          <div class="inner">
+            <header class="major">
+              <h2>Workflow</h2>
+            </header>
+            <p>把常用操作整理成流程卡片，适合手机上快速扫一眼。</p>
+            <div class="snippet-grid">
+              <div class="snippet-card"><h3>1. Edit</h3><code>修改页面、脚本、Worker 或配置文件</code></div>
+              <div class="snippet-card"><h3>2. Test</h3><code>本地 curl / browser 预览，确认移动端排版</code></div>
+              <div class="snippet-card"><h3>3. Deploy</h3><code>推送 GitHub Pages、Cloudflare Worker 或静态资源</code></div>
+              <div class="snippet-card"><h3>4. Verify</h3><code>检查 HTTP 状态、DNS 解析、证书和页面标题</code></div>
             </div>
             <ul class="actions">
               <li><a href="https://github.com/" class="button primary">GitHub</a></li>
