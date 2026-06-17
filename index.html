@@ -9,11 +9,15 @@
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
     <style>
       .snippet-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 2rem 0; }
-      .snippet-card { border: 1px solid rgba(212, 212, 255, 0.1); background: rgba(212, 212, 255, 0.035); padding: 1.15rem; }
+      .snippet-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .snippet-card { border: 1px solid rgba(212, 212, 255, 0.1); background: rgba(212, 212, 255, 0.035); padding: 1.15rem; min-height: 8.4rem; }
       .snippet-card h3 { font-size: 1rem; margin: 0 0 .75rem 0; }
+      .snippet-card p { margin: 0 0 .75rem 0; color: rgba(244, 244, 255, 0.72); }
       .snippet-card code { display: block; white-space: normal; word-break: break-word; line-height: 1.7; }
+      .snippet-card a { border-bottom-color: rgba(255,255,255,.25); }
+      .mini-label { color: #9bf1ff; font-size: .72rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
       @media screen and (max-width: 736px) {
-        .snippet-grid { grid-template-columns: 1fr; gap: .85rem; }
+        .snippet-grid, .snippet-grid.three { grid-template-columns: 1fr; gap: .85rem; }
         .snippet-card { padding: 1rem; }
         .snippet-card code { font-size: .9rem; }
         #snippets .actions { display: grid; gap: .75rem; }
@@ -151,19 +155,22 @@
             <header class="major">
               <h2>Toolkit</h2>
             </header>
-            <p>这里放真正会经常点开的开发工具，不再展示 DNS IP 这种一次性配置。</p>
-            <div class="snippet-grid">
-              <div class="snippet-card"><h3>JSON / Formatter</h3><code>格式化、压缩、Diff、转义和接口响应检查</code></div>
-              <div class="snippet-card"><h3>JWT / Token</h3><code>解码 Header / Payload，快速检查过期时间和声明</code></div>
-              <div class="snippet-card"><h3>Regex / Text</h3><code>正则验证、日志提取、批量替换和文本清洗</code></div>
-              <div class="snippet-card"><h3>HTTP / Webhook</h3><code>测试 API、Header、状态码、回调与跨域问题</code></div>
-              <div class="snippet-card"><h3>SSL / DNS</h3><code>检查证书、解析、CNAME、A 记录和 HTTPS 状态</code></div>
-              <div class="snippet-card"><h3>Cron / Schedule</h3><code>定时表达式、自动化任务和周期运行计划</code></div>
+            <p>精选开发、调试、部署相关工具，只放符合 git.loc.cc 语义的技术入口。</p>
+            <div class="snippet-grid three">
+              <div class="snippet-card"><span class="mini-label">Data</span><h3><a href="https://jsonformatter.org/">JSON Formatter</a></h3><p>格式化、压缩、Diff、转义和接口响应检查。</p></div>
+              <div class="snippet-card"><span class="mini-label">Auth</span><h3><a href="https://jwt.io/">JWT Debugger</a></h3><p>解码 Header / Payload，检查过期时间和声明。</p></div>
+              <div class="snippet-card"><span class="mini-label">Text</span><h3><a href="https://regex101.com/">Regex101</a></h3><p>正则验证、日志提取、批量替换和文本处理。</p></div>
+              <div class="snippet-card"><span class="mini-label">HTTP</span><h3><a href="https://httpie.io/app">HTTPie Web</a></h3><p>测试 API、Header、状态码、Webhook 与跨域问题。</p></div>
+              <div class="snippet-card"><span class="mini-label">DNS</span><h3><a href="https://www.nslookup.io/">NSLookup</a></h3><p>检查 A、AAAA、CNAME、MX、TXT 和全球解析。</p></div>
+              <div class="snippet-card"><span class="mini-label">TLS</span><h3><a href="https://www.ssllabs.com/ssltest/">SSL Labs</a></h3><p>证书链、TLS 配置、HTTPS 等级和兼容性检查。</p></div>
+              <div class="snippet-card"><span class="mini-label">Schedule</span><h3><a href="https://crontab.guru/">Crontab Guru</a></h3><p>定时表达式解释、周期计划和任务排错。</p></div>
+              <div class="snippet-card"><span class="mini-label">Git</span><h3><a href="https://learngitbranching.js.org/">Learn Git Branching</a></h3><p>交互式学习分支、rebase、merge 和 reset。</p></div>
+              <div class="snippet-card"><span class="mini-label">Docs</span><h3><a href="https://devdocs.io/">DevDocs</a></h3><p>离线友好的多语言 API 文档速查。</p></div>
             </div>
             <ul class="actions">
-              <li><a href="https://jsonformatter.org/" class="button primary">JSON Tools</a></li>
-              <li><a href="https://jwt.io/" class="button">JWT</a></li>
-              <li><a href="https://regex101.com/" class="button">Regex</a></li>
+              <li><a href="https://jsonformatter.org/" class="button primary">Data Tools</a></li>
+              <li><a href="https://httpie.io/app" class="button">HTTP</a></li>
+              <li><a href="https://www.nslookup.io/" class="button">DNS</a></li>
             </ul>
           </div>
         </section>
@@ -173,17 +180,26 @@
             <header class="major">
               <h2>Workflow</h2>
             </header>
-            <p>把常用操作整理成流程卡片，适合手机上快速扫一眼。</p>
+            <p>把常用操作整理成可复用流程，适合静态站、Worker、脚本和小工具发布。</p>
             <div class="snippet-grid">
-              <div class="snippet-card"><h3>1. Edit</h3><code>修改页面、脚本、Worker 或配置文件</code></div>
-              <div class="snippet-card"><h3>2. Test</h3><code>本地 curl / browser 预览，确认移动端排版</code></div>
-              <div class="snippet-card"><h3>3. Deploy</h3><code>推送 GitHub Pages、Cloudflare Worker 或静态资源</code></div>
-              <div class="snippet-card"><h3>4. Verify</h3><code>检查 HTTP 状态、DNS 解析、证书和页面标题</code></div>
+              <div class="snippet-card"><span class="mini-label">Git</span><h3>Feature Branch</h3><code>git switch -c feature/name<br />git add .<br />git commit -m "feat: update"</code></div>
+              <div class="snippet-card"><span class="mini-label">Git</span><h3>Clean Commit</h3><code>git status<br />git diff --check<br />git log --oneline -5</code></div>
+              <div class="snippet-card"><span class="mini-label">Deploy</span><h3>Static Release</h3><code>build → upload assets → trigger Pages build → verify URL</code></div>
+              <div class="snippet-card"><span class="mini-label">Verify</span><h3>Post Deploy</h3><code>HTTP 200<br />title matched<br />mobile layout OK<br />links reachable</code></div>
+            </div>
+            <header class="major"><h2>Release Checklist</h2></header>
+            <div class="snippet-grid three">
+              <div class="snippet-card"><h3>Content</h3><p>标题、描述、卡片文案、链接分类一致，不放无关入口。</p></div>
+              <div class="snippet-card"><h3>Mobile</h3><p>手机宽度不横向溢出，按钮可点击，代码块自动换行。</p></div>
+              <div class="snippet-card"><h3>Network</h3><p>图片、CSS、JS 都走相对路径；404 和缓存问题部署后检查。</p></div>
+              <div class="snippet-card"><h3>DNS</h3><p>解析到目标平台，权威 DNS 与公共 DNS 都能查到记录。</p></div>
+              <div class="snippet-card"><h3>HTTPS</h3><p>证书签发后再开启强制 HTTPS；没证书时保留 HTTP 可用。</p></div>
+              <div class="snippet-card"><h3>Archive</h3><p>保留源码、部署脚本、域名记录和变更说明，方便回滚。</p></div>
             </div>
             <ul class="actions">
               <li><a href="https://github.com/" class="button primary">GitHub</a></li>
-              <li><a href="https://nav.tmlgbd.cc.cd/" class="button">Main Nav</a></li>
-              <li><a href="https://coc.loc.cc/" class="button">COC Mirror</a></li>
+              <li><a href="https://docs.github.com/en/pages" class="button">Pages Docs</a></li>
+              <li><a href="https://git-scm.com/docs" class="button">Git Docs</a></li>
             </ul>
           </div>
         </section>
@@ -192,8 +208,14 @@
       <section id="contact">
         <div class="inner">
           <section>
-            <header class="major"><h2>About</h2></header>
-            <p>git.loc.cc 是静态开发入口页。动态服务、后台管理和 API 不放在这里；这里只承载公开入口、工具链接和部署说明。</p>
+            <header class="major"><h2>Dev Portal Scope</h2></header>
+            <p>git.loc.cc 只放开发、Git、调试、部署、文档相关资源。动态服务、个人生活导航、后台管理入口不放这里，避免分类变脏。</p>
+            <div class="snippet-grid">
+              <div class="snippet-card"><h3>Code</h3><p>仓库、版本控制、分支策略、提交规范和发布记录。</p></div>
+              <div class="snippet-card"><h3>Debug</h3><p>HTTP、JWT、DNS、TLS、Regex、JSON 等调试工具。</p></div>
+              <div class="snippet-card"><h3>Deploy</h3><p>GitHub Pages、Cloudflare Workers、静态资源和域名检查。</p></div>
+              <div class="snippet-card"><h3>Docs</h3><p>Git、Pages、Workers、API 文档与常用命令速查。</p></div>
+            </div>
           </section>
           <section class="split">
             <section>
@@ -208,6 +230,13 @@
                 <span class="icon solid alt fa-globe"></span>
                 <h3>Domain</h3>
                 <span>NodeLoc DNS → GitHub Pages</span>
+              </div>
+            </section>
+            <section>
+              <div class="contact-method">
+                <span class="icon solid alt fa-check"></span>
+                <h3>Category</h3>
+                <span>Git · Dev · Deploy · Debug</span>
               </div>
             </section>
           </section>
