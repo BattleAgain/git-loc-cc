@@ -7,6 +7,19 @@
     <meta name="description" content="TMLGBD Dev Hub：项目、工具、部署笔记、Git 速查与静态镜像入口。" />
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    <style>
+      .snippet-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 2rem 0; }
+      .snippet-card { border: 1px solid rgba(212, 212, 255, 0.1); background: rgba(212, 212, 255, 0.035); padding: 1.15rem; }
+      .snippet-card h3 { font-size: 1rem; margin: 0 0 .75rem 0; }
+      .snippet-card code { display: block; white-space: normal; word-break: break-word; line-height: 1.7; }
+      @media screen and (max-width: 736px) {
+        .snippet-grid { grid-template-columns: 1fr; gap: .85rem; }
+        .snippet-card { padding: 1rem; }
+        .snippet-card code { font-size: .9rem; }
+        #snippets .actions { display: grid; gap: .75rem; }
+        #snippets .actions li, #snippets .actions .button { width: 100%; }
+      }
+    </style>
   </head>
   <body class="is-preload">
     <div id="wrapper">
@@ -96,17 +109,13 @@
               <h2>Command Snippets</h2>
             </header>
             <p>常用命令保留在首页，手机上也能快速复制参考。</p>
-            <div class="table-wrapper">
-              <table>
-                <tbody>
-                  <tr><td>查看状态</td><td><code>git status</code></td></tr>
-                  <tr><td>提交更新</td><td><code>git add . && git commit -m "ship update"</code></td></tr>
-                  <tr><td>推送主分支</td><td><code>git push origin main</code></td></tr>
-                  <tr><td>撤销暂存</td><td><code>git restore --staged .</code></td></tr>
-                  <tr><td>回退提交</td><td><code>git reset --soft HEAD~1</code></td></tr>
-                  <tr><td>GitHub Pages A</td><td><code>185.199.108.153 / 109.153 / 110.153 / 111.153</code></td></tr>
-                </tbody>
-              </table>
+            <div class="snippet-grid">
+              <div class="snippet-card"><h3>查看状态</h3><code>git status</code></div>
+              <div class="snippet-card"><h3>提交更新</h3><code>git add . && git commit -m "ship update"</code></div>
+              <div class="snippet-card"><h3>推送主分支</h3><code>git push origin main</code></div>
+              <div class="snippet-card"><h3>撤销暂存</h3><code>git restore --staged .</code></div>
+              <div class="snippet-card"><h3>回退提交</h3><code>git reset --soft HEAD~1</code></div>
+              <div class="snippet-card"><h3>GitHub Pages A</h3><code>185.199.108.153 / 109.153 / 110.153 / 111.153</code></div>
             </div>
             <ul class="actions">
               <li><a href="https://github.com/" class="button primary">GitHub</a></li>
