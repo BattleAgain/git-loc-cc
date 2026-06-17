@@ -1,266 +1,189 @@
-<!DOCTYPE HTML>
+<!doctype html>
 <html lang="zh-CN">
-  <head>
-    <title>git.loc.cc · TMLGBD Dev Hub</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <meta name="description" content="TMLGBD Dev Hub：项目、工具、部署笔记、Git 速查与静态镜像入口。" />
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-    <style>
-      .snippet-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 2rem 0; }
-      .snippet-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .snippet-card { border: 1px solid rgba(212, 212, 255, 0.1); background: rgba(212, 212, 255, 0.035); padding: 1.15rem; min-height: 8.4rem; }
-      .snippet-card h3 { font-size: 1rem; margin: 0 0 .75rem 0; }
-      .snippet-card p { margin: 0 0 .75rem 0; color: rgba(244, 244, 255, 0.72); }
-      .snippet-card code { display: block; white-space: normal; word-break: break-word; line-height: 1.7; }
-      .snippet-card a { border-bottom-color: rgba(255,255,255,.25); }
-      .mini-label { color: #9bf1ff; font-size: .72rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
-      @media screen and (max-width: 736px) {
-        .snippet-grid, .snippet-grid.three { grid-template-columns: 1fr; gap: .85rem; }
-        .snippet-card { padding: 1rem; }
-        .snippet-card code { font-size: .9rem; }
-        #snippets .actions { display: grid; gap: .75rem; }
-        #snippets .actions li, #snippets .actions .button { width: 100%; }
-      }
-    </style>
-  </head>
-  <body class="is-preload">
-    <div id="wrapper">
-      <header id="header" class="alt">
-        <a href="/" class="logo"><strong>git.loc.cc</strong> <span>Dev Hub</span></a>
-        <nav><a href="#menu">Menu</a></nav>
-      </header>
-
-      <nav id="menu">
-        <ul class="links">
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#tools">Tools</a></li>
-          <li><a href="#snippets">Toolkit</a></li>
-          <li><a href="#workflow">Workflow</a></li>
-          <li><a href="https://nav.tmlgbd.cc.cd/">Main Nav</a></li>
-          <li><a href="https://coc.loc.cc/">COC Mirror</a></li>
-        </ul>
-        <ul class="actions stacked">
-          <li><a href="https://github.com/" class="button primary fit">Open GitHub</a></li>
-          <li><a href="https://tmlgbd.cc.cd/" class="button fit">TMLGBD</a></li>
-        </ul>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>git.loc.cc · Dev Dashboard</title>
+  <meta name="description" content="git.loc.cc：Git、开发、调试、部署与文档资源仪表盘。">
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #11182b;
+      --panel-2: #151f36;
+      --line: rgba(148, 163, 184, .18);
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --blue: #60a5fa;
+      --cyan: #22d3ee;
+      --green: #34d399;
+      --amber: #fbbf24;
+      --red: #fb7185;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; min-height: 100vh; background: radial-gradient(circle at top left, rgba(37, 99, 235, .28), transparent 28rem), radial-gradient(circle at top right, rgba(20, 184, 166, .18), transparent 26rem), var(--bg); color: var(--text); }
+    a { color: inherit; text-decoration: none; }
+    .shell { display: grid; grid-template-columns: 260px minmax(0, 1fr); min-height: 100vh; }
+    .sidebar { position: sticky; top: 0; height: 100vh; padding: 24px 18px; border-right: 1px solid var(--line); background: rgba(10, 15, 30, .78); backdrop-filter: blur(16px); }
+    .brand { display: flex; align-items: center; gap: 12px; padding: 10px; margin-bottom: 22px; }
+    .logo { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 14px; background: linear-gradient(135deg, #2563eb, #06b6d4); color: white; font-weight: 900; letter-spacing: -.06em; }
+    .brand strong { display: block; letter-spacing: .16em; font-size: 13px; }
+    .brand span { color: var(--muted); font-size: 12px; }
+    .nav { display: grid; gap: 8px; }
+    .nav a { padding: 11px 12px; border-radius: 12px; color: #cbd5e1; border: 1px solid transparent; }
+    .nav a:hover { background: rgba(96, 165, 250, .12); border-color: rgba(96, 165, 250, .2); color: white; }
+    .side-card { margin-top: 22px; padding: 16px; border: 1px solid var(--line); border-radius: 18px; background: rgba(17, 24, 43, .82); }
+    .side-card b { display: block; margin-bottom: 8px; }
+    .side-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .main { min-width: 0; padding: 24px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .crumb { color: var(--muted); font-size: 14px; }
+    .quick { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 9px 13px; border-radius: 12px; border: 1px solid var(--line); color: #dbeafe; background: rgba(17, 24, 43, .7); font-weight: 650; }
+    .btn.primary { background: linear-gradient(135deg, #2563eb, #0891b2); border-color: transparent; color: white; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr); gap: 18px; margin-bottom: 18px; }
+    .panel { border: 1px solid var(--line); border-radius: 24px; background: rgba(17, 24, 43, .82); box-shadow: 0 18px 70px rgba(0,0,0,.26); }
+    .hero-main { padding: 34px; position: relative; overflow: hidden; }
+    .hero-main::after { content: "</>"; position: absolute; right: 22px; bottom: -24px; color: rgba(96, 165, 250, .07); font-size: 160px; font-weight: 900; }
+    .tag { display: inline-flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 999px; background: rgba(34, 211, 238, .12); border: 1px solid rgba(34, 211, 238, .22); color: #a5f3fc; font-size: 13px; }
+    h1 { margin: 20px 0 12px; font-size: clamp(40px, 7vw, 78px); line-height: .94; letter-spacing: -.06em; }
+    .lead { max-width: 720px; color: #cbd5e1; font-size: 18px; line-height: 1.75; margin: 0; }
+    .stats { display: grid; gap: 12px; padding: 20px; }
+    .stat { padding: 16px; border-radius: 18px; background: rgba(15, 23, 42, .72); border: 1px solid rgba(148, 163, 184, .12); }
+    .stat b { display: block; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .12em; margin-bottom: 7px; }
+    .stat span { font-size: 20px; font-weight: 800; }
+    section { margin: 18px 0; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+    .section-head h2 { margin: 0; font-size: 24px; letter-spacing: -.03em; }
+    .section-head p { margin: 0; color: var(--muted); font-size: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .card { min-height: 178px; padding: 18px; border: 1px solid var(--line); border-radius: 20px; background: rgba(17, 24, 43, .78); transition: transform .16s ease, border-color .16s ease, background .16s ease; }
+    .card:hover { transform: translateY(-2px); border-color: rgba(96, 165, 250, .45); background: rgba(21, 31, 54, .92); }
+    .icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 14px; margin-bottom: 16px; background: rgba(96, 165, 250, .14); color: #bfdbfe; font-weight: 900; }
+    .card h3 { margin: 0 0 8px; font-size: 17px; }
+    .card p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .meta { display: inline-flex; margin-top: 14px; color: #93c5fd; font-size: 13px; font-weight: 750; }
+    .wide { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .list { padding: 20px; }
+    .list h3 { margin: 0 0 14px; }
+    .rows { display: grid; gap: 10px; }
+    .row { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; padding: 12px; border-radius: 14px; background: rgba(15, 23, 42, .62); border: 1px solid rgba(148, 163, 184, .12); }
+    .row b { color: #e2e8f0; }
+    .row code, .code { color: #a7f3d0; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; word-break: break-word; }
+    .check { display: grid; gap: 10px; padding: 20px; }
+    .check li { margin: 0; color: #cbd5e1; line-height: 1.65; }
+    .check ul { margin: 0; padding-left: 20px; }
+    footer { color: var(--muted); text-align: center; padding: 24px 0 8px; font-size: 13px; }
+    @media (max-width: 1100px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .hero, .wide { grid-template-columns: 1fr; } }
+    @media (max-width: 820px) { .shell { display: block; } .sidebar { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); } .nav { grid-template-columns: repeat(2, minmax(0, 1fr)); } .main { padding: 16px; } .topbar { display: grid; } .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hero-main { padding: 26px; } }
+    @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } .nav { grid-template-columns: 1fr 1fr; } .quick, .actions { display: grid; grid-template-columns: 1fr; } .btn { width: 100%; } .row { grid-template-columns: 1fr; } .card { min-height: auto; } h1 { font-size: 42px; } .lead { font-size: 16px; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">git</div>
+        <div><strong>GIT.LOC.CC</strong><span>Dev Dashboard</span></div>
+      </div>
+      <nav class="nav">
+        <a href="#tools">Toolkit</a>
+        <a href="#git">Git Flow</a>
+        <a href="#deploy">Deploy</a>
+        <a href="#checks">Checks</a>
+        <a href="#docs">Docs</a>
+        <a href="#scope">Scope</a>
       </nav>
+      <div class="side-card">
+        <b>静态开发入口</b>
+        <p>只放 Git、开发、调试、部署、文档相关资源。生活导航和后台入口不放这里。</p>
+      </div>
+    </aside>
 
-      <section id="banner" class="major">
-        <div class="inner">
-          <header class="major">
-            <h1>TMLGBD Dev Hub</h1>
-          </header>
-          <div class="content">
-            <p>项目入口、开发工具、部署笔记与 Git 速查。<br />
-            这是适合长期挂在 git.loc.cc 的静态开发主页。</p>
-            <ul class="actions">
-              <li><a href="#projects" class="button next scrolly">进入入口</a></li>
-            </ul>
-          </div>
+    <main class="main">
+      <div class="topbar">
+        <div class="crumb">Dashboard / Static / GitHub Pages</div>
+        <div class="quick">
+          <a class="btn primary" href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+          <a class="btn" href="https://git-scm.com/docs" target="_blank" rel="noreferrer">Git Docs</a>
+          <a class="btn" href="https://nav.tmlgbd.cc.cd/" target="_blank" rel="noreferrer">Main Nav</a>
         </div>
-      </section>
-
-      <div id="main">
-        <section id="projects" class="tiles">
-          <article>
-            <span class="image"><img src="images/pic01.jpg" alt="" /></span>
-            <header class="major">
-              <h3><a href="https://github.com/" class="link">Projects</a></h3>
-              <p>GitHub 仓库、Worker 项目、APK 工程与脚本发布</p>
-            </header>
-          </article>
-          <article id="tools">
-            <span class="image"><img src="images/pic02.jpg" alt="" /></span>
-            <header class="major">
-              <h3><a href="https://jsonformatter.org/" class="link">Dev Tools</a></h3>
-              <p>JSON、JWT、Base64、Hash、URL、时间戳工具入口</p>
-            </header>
-          </article>
-          <article>
-            <span class="image"><img src="images/pic03.jpg" alt="" /></span>
-            <header class="major">
-              <h3><a href="https://nav.tmlgbd.cc.cd/" class="link">Service Index</a></h3>
-              <p>TMLGBD 主导航、图床、短链、邮箱、额度查询</p>
-            </header>
-          </article>
-          <article>
-            <span class="image"><img src="images/pic04.jpg" alt="" /></span>
-            <header class="major">
-              <h3><a href="https://docs.github.com/en/pages" class="link">Deploy Notes</a></h3>
-              <p>GitHub Pages、NodeLoc DNS、Cloudflare 部署笔记</p>
-            </header>
-          </article>
-          <article>
-            <span class="image"><img src="images/pic05.jpg" alt="" /></span>
-            <header class="major">
-              <h3><a href="https://git-scm.com/docs" class="link">Git Cheatsheet</a></h3>
-              <p>常用 Git 命令、回滚、分支、标签和远端操作</p>
-            </header>
-          </article>
-          <article>
-            <span class="image"><img src="images/pic06.jpg" alt="" /></span>
-            <header class="major">
-              <h3><a href="https://coc.loc.cc/" class="link">Static Mirror</a></h3>
-              <p>coc.loc.cc 静态导航镜像，备用入口与域名保活</p>
-            </header>
-          </article>
-          <article>
-            <span class="image"><img src="images/pic07.jpg" alt="" /></span>
-            <header class="major">
-              <h3><a href="https://jwt.io/" class="link">JWT Lab</a></h3>
-              <p>JWT 解码、Header/Payload 检查和接口调试辅助</p>
-            </header>
-          </article>
-          <article>
-            <span class="image"><img src="images/pic08.jpg" alt="" /></span>
-            <header class="major">
-              <h3><a href="https://regex101.com/" class="link">Regex Lab</a></h3>
-              <p>正则测试、日志匹配、规则验证和文本处理</p>
-            </header>
-          </article>
-          <article>
-            <span class="image"><img src="images/pic09.jpg" alt="" /></span>
-            <header class="major">
-              <h3><a href="https://httpie.io/app" class="link">HTTP Client</a></h3>
-              <p>接口请求、Header 检查、Webhook 和 API 调试</p>
-            </header>
-          </article>
-          <article>
-            <span class="image"><img src="images/pic10.jpg" alt="" /></span>
-            <header class="major">
-              <h3><a href="https://crontab.guru/" class="link">Cron Helper</a></h3>
-              <p>定时任务表达式、计划检查和自动化任务参考</p>
-            </header>
-          </article>
-          <article>
-            <span class="image"><img src="images/pic11.jpg" alt="" /></span>
-            <header class="major">
-              <h3><a href="https://www.ssllabs.com/ssltest/" class="link">SSL Check</a></h3>
-              <p>证书、TLS 配置、HTTPS 状态和域名安全检查</p>
-            </header>
-          </article>
-          <article>
-            <span class="image"><img src="images/pic04.jpg" alt="" /></span>
-            <header class="major">
-              <h3><a href="https://developers.cloudflare.com/workers/" class="link">Workers Docs</a></h3>
-              <p>Cloudflare Workers、KV、D1、R2 与边缘部署文档</p>
-            </header>
-          </article>
-        </section>
-
-        <section id="snippets">
-          <div class="inner">
-            <header class="major">
-              <h2>Toolkit</h2>
-            </header>
-            <p>精选开发、调试、部署相关工具，只放符合 git.loc.cc 语义的技术入口。</p>
-            <div class="snippet-grid three">
-              <div class="snippet-card"><span class="mini-label">Data</span><h3><a href="https://jsonformatter.org/">JSON Formatter</a></h3><p>格式化、压缩、Diff、转义和接口响应检查。</p></div>
-              <div class="snippet-card"><span class="mini-label">Auth</span><h3><a href="https://jwt.io/">JWT Debugger</a></h3><p>解码 Header / Payload，检查过期时间和声明。</p></div>
-              <div class="snippet-card"><span class="mini-label">Text</span><h3><a href="https://regex101.com/">Regex101</a></h3><p>正则验证、日志提取、批量替换和文本处理。</p></div>
-              <div class="snippet-card"><span class="mini-label">HTTP</span><h3><a href="https://httpie.io/app">HTTPie Web</a></h3><p>测试 API、Header、状态码、Webhook 与跨域问题。</p></div>
-              <div class="snippet-card"><span class="mini-label">DNS</span><h3><a href="https://www.nslookup.io/">NSLookup</a></h3><p>检查 A、AAAA、CNAME、MX、TXT 和全球解析。</p></div>
-              <div class="snippet-card"><span class="mini-label">TLS</span><h3><a href="https://www.ssllabs.com/ssltest/">SSL Labs</a></h3><p>证书链、TLS 配置、HTTPS 等级和兼容性检查。</p></div>
-              <div class="snippet-card"><span class="mini-label">Schedule</span><h3><a href="https://crontab.guru/">Crontab Guru</a></h3><p>定时表达式解释、周期计划和任务排错。</p></div>
-              <div class="snippet-card"><span class="mini-label">Git</span><h3><a href="https://learngitbranching.js.org/">Learn Git Branching</a></h3><p>交互式学习分支、rebase、merge 和 reset。</p></div>
-              <div class="snippet-card"><span class="mini-label">Docs</span><h3><a href="https://devdocs.io/">DevDocs</a></h3><p>离线友好的多语言 API 文档速查。</p></div>
-            </div>
-            <ul class="actions">
-              <li><a href="https://jsonformatter.org/" class="button primary">Data Tools</a></li>
-              <li><a href="https://httpie.io/app" class="button">HTTP</a></li>
-              <li><a href="https://www.nslookup.io/" class="button">DNS</a></li>
-            </ul>
-          </div>
-        </section>
-
-        <section id="workflow">
-          <div class="inner">
-            <header class="major">
-              <h2>Workflow</h2>
-            </header>
-            <p>把常用操作整理成可复用流程，适合静态站、Worker、脚本和小工具发布。</p>
-            <div class="snippet-grid">
-              <div class="snippet-card"><span class="mini-label">Git</span><h3>Feature Branch</h3><code>git switch -c feature/name<br />git add .<br />git commit -m "feat: update"</code></div>
-              <div class="snippet-card"><span class="mini-label">Git</span><h3>Clean Commit</h3><code>git status<br />git diff --check<br />git log --oneline -5</code></div>
-              <div class="snippet-card"><span class="mini-label">Deploy</span><h3>Static Release</h3><code>build → upload assets → trigger Pages build → verify URL</code></div>
-              <div class="snippet-card"><span class="mini-label">Verify</span><h3>Post Deploy</h3><code>HTTP 200<br />title matched<br />mobile layout OK<br />links reachable</code></div>
-            </div>
-            <header class="major"><h2>Release Checklist</h2></header>
-            <div class="snippet-grid three">
-              <div class="snippet-card"><h3>Content</h3><p>标题、描述、卡片文案、链接分类一致，不放无关入口。</p></div>
-              <div class="snippet-card"><h3>Mobile</h3><p>手机宽度不横向溢出，按钮可点击，代码块自动换行。</p></div>
-              <div class="snippet-card"><h3>Network</h3><p>图片、CSS、JS 都走相对路径；404 和缓存问题部署后检查。</p></div>
-              <div class="snippet-card"><h3>DNS</h3><p>解析到目标平台，权威 DNS 与公共 DNS 都能查到记录。</p></div>
-              <div class="snippet-card"><h3>HTTPS</h3><p>证书签发后再开启强制 HTTPS；没证书时保留 HTTP 可用。</p></div>
-              <div class="snippet-card"><h3>Archive</h3><p>保留源码、部署脚本、域名记录和变更说明，方便回滚。</p></div>
-            </div>
-            <ul class="actions">
-              <li><a href="https://github.com/" class="button primary">GitHub</a></li>
-              <li><a href="https://docs.github.com/en/pages" class="button">Pages Docs</a></li>
-              <li><a href="https://git-scm.com/docs" class="button">Git Docs</a></li>
-            </ul>
-          </div>
-        </section>
       </div>
 
-      <section id="contact">
-        <div class="inner">
-          <section>
-            <header class="major"><h2>Dev Portal Scope</h2></header>
-            <p>git.loc.cc 只放开发、Git、调试、部署、文档相关资源。动态服务、个人生活导航、后台管理入口不放这里，避免分类变脏。</p>
-            <div class="snippet-grid">
-              <div class="snippet-card"><h3>Code</h3><p>仓库、版本控制、分支策略、提交规范和发布记录。</p></div>
-              <div class="snippet-card"><h3>Debug</h3><p>HTTP、JWT、DNS、TLS、Regex、JSON 等调试工具。</p></div>
-              <div class="snippet-card"><h3>Deploy</h3><p>GitHub Pages、Cloudflare Workers、静态资源和域名检查。</p></div>
-              <div class="snippet-card"><h3>Docs</h3><p>Git、Pages、Workers、API 文档与常用命令速查。</p></div>
-            </div>
-          </section>
-          <section class="split">
-            <section>
-              <div class="contact-method">
-                <span class="icon solid alt fa-code"></span>
-                <h3>Hosting</h3>
-                <span>GitHub Pages · Static HTML</span>
-              </div>
-            </section>
-            <section>
-              <div class="contact-method">
-                <span class="icon solid alt fa-globe"></span>
-                <h3>Domain</h3>
-                <span>NodeLoc DNS → GitHub Pages</span>
-              </div>
-            </section>
-            <section>
-              <div class="contact-method">
-                <span class="icon solid alt fa-check"></span>
-                <h3>Category</h3>
-                <span>Git · Dev · Deploy · Debug</span>
-              </div>
-            </section>
-          </section>
+      <section class="hero">
+        <div class="panel hero-main">
+          <div class="tag">⚡ Static · Fast · Developer Focused</div>
+          <h1>TMLGBD<br>Dev Dashboard</h1>
+          <p class="lead">一个纯静态开发仪表盘：聚合 Git、调试工具、部署文档、发布检查和常用工作流。页面风格统一，不做 tile 内页跳转。</p>
+        </div>
+        <div class="panel stats">
+          <div class="stat"><b>Hosting</b><span>GitHub Pages</span></div>
+          <div class="stat"><b>Category</b><span>Git / Dev / Deploy</span></div>
+          <div class="stat"><b>Mode</b><span>Single Static Page</span></div>
+          <div class="stat"><b>Status</b><span>Public Entry</span></div>
         </div>
       </section>
 
-      <footer id="footer">
-        <div class="inner">
-          <ul class="icons">
-            <li><a href="https://github.com/" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
-          </ul>
-          <ul class="copyright">
-            <li>&copy; git.loc.cc</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
-          </ul>
+      <section id="tools">
+        <div class="section-head"><div><h2>Toolkit</h2><p>高频开发、调试、验证工具。</p></div></div>
+        <div class="grid">
+          <a class="card" href="https://jsonformatter.org/" target="_blank" rel="noreferrer"><div class="icon">{ }</div><h3>JSON Formatter</h3><p>格式化、压缩、Diff、转义和接口响应检查。</p><span class="meta">Data Tool →</span></a>
+          <a class="card" href="https://jwt.io/" target="_blank" rel="noreferrer"><div class="icon">JWT</div><h3>JWT Debugger</h3><p>解码 Header / Payload，检查声明和过期时间。</p><span class="meta">Auth Tool →</span></a>
+          <a class="card" href="https://regex101.com/" target="_blank" rel="noreferrer"><div class="icon">.*</div><h3>Regex101</h3><p>正则验证、日志提取、文本清洗和批量替换。</p><span class="meta">Text Tool →</span></a>
+          <a class="card" href="https://httpie.io/app" target="_blank" rel="noreferrer"><div class="icon">HTTP</div><h3>HTTPie Web</h3><p>测试 API、Header、状态码、Webhook 与 CORS。</p><span class="meta">API Tool →</span></a>
+          <a class="card" href="https://www.nslookup.io/" target="_blank" rel="noreferrer"><div class="icon">DNS</div><h3>NSLookup</h3><p>检查 A、AAAA、CNAME、MX、TXT 和全球解析。</p><span class="meta">DNS Tool →</span></a>
+          <a class="card" href="https://www.ssllabs.com/ssltest/" target="_blank" rel="noreferrer"><div class="icon">TLS</div><h3>SSL Labs</h3><p>证书链、TLS 配置、HTTPS 等级和兼容性。</p><span class="meta">Security →</span></a>
+          <a class="card" href="https://crontab.guru/" target="_blank" rel="noreferrer"><div class="icon">CRON</div><h3>Crontab Guru</h3><p>解释定时表达式、周期计划和自动化任务。</p><span class="meta">Schedule →</span></a>
+          <a class="card" href="https://devdocs.io/" target="_blank" rel="noreferrer"><div class="icon">DOC</div><h3>DevDocs</h3><p>多语言 API 文档速查，适合移动端快速检索。</p><span class="meta">Reference →</span></a>
         </div>
-      </footer>
-    </div>
+      </section>
 
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.scrolly.min.js"></script>
-    <script src="assets/js/jquery.scrollex.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
-  </body>
+      <section id="git">
+        <div class="section-head"><div><h2>Git Flow</h2><p>常用 Git 工作流，不堆无关命令。</p></div></div>
+        <div class="wide">
+          <div class="panel list"><h3>Daily Flow</h3><div class="rows"><div class="row"><b>检查</b><code>git status</code></div><div class="row"><b>新分支</b><code>git switch -c feature/name</code></div><div class="row"><b>提交</b><code>git add . && git commit -m "feat: update"</code></div><div class="row"><b>推送</b><code>git push origin main</code></div></div></div>
+          <div class="panel list"><h3>Cleanup</h3><div class="rows"><div class="row"><b>撤销暂存</b><code>git restore --staged .</code></div><div class="row"><b>回退提交</b><code>git reset --soft HEAD~1</code></div><div class="row"><b>看日志</b><code>git log --oneline --graph -10</code></div><div class="row"><b>检查空白</b><code>git diff --check</code></div></div></div>
+          <div class="panel list"><h3>Release</h3><div class="rows"><div class="row"><b>打标签</b><code>git tag v1.0.0</code></div><div class="row"><b>推标签</b><code>git push origin v1.0.0</code></div><div class="row"><b>同步</b><code>git pull --ff-only</code></div><div class="row"><b>远端</b><code>git remote -v</code></div></div></div>
+        </div>
+      </section>
+
+      <section id="deploy">
+        <div class="section-head"><div><h2>Deploy Matrix</h2><p>静态页、Worker、接口与文档的部署入口。</p></div></div>
+        <div class="grid">
+          <a class="card" href="https://docs.github.com/en/pages" target="_blank" rel="noreferrer"><div class="icon">GH</div><h3>GitHub Pages</h3><p>静态站、文档、项目介绍页和公开入口页。</p><span class="meta">Pages Docs →</span></a>
+          <a class="card" href="https://developers.cloudflare.com/workers/" target="_blank" rel="noreferrer"><div class="icon">CF</div><h3>Workers</h3><p>边缘 API、轻后端、鉴权、反代和自动化逻辑。</p><span class="meta">Workers Docs →</span></a>
+          <a class="card" href="https://developers.cloudflare.com/kv/" target="_blank" rel="noreferrer"><div class="icon">KV</div><h3>KV Storage</h3><p>配置、计数、轻量键值数据和边缘读取。</p><span class="meta">KV Docs →</span></a>
+          <a class="card" href="https://developers.cloudflare.com/r2/" target="_blank" rel="noreferrer"><div class="icon">R2</div><h3>R2 Assets</h3><p>图片、附件、下载文件和对象存储。</p><span class="meta">R2 Docs →</span></a>
+        </div>
+      </section>
+
+      <section id="checks">
+        <div class="section-head"><div><h2>Release Checks</h2><p>发布后最少要确认这些点。</p></div></div>
+        <div class="wide">
+          <div class="panel check"><h3>Content</h3><ul><li>标题和描述符合分类。</li><li>链接都是开发/部署/文档相关。</li><li>没有混入生活导航或后台入口。</li></ul></div>
+          <div class="panel check"><h3>Mobile</h3><ul><li>不横向溢出。</li><li>卡片不压字。</li><li>按钮足够大，能单手点击。</li></ul></div>
+          <div class="panel check"><h3>Network</h3><ul><li>HTTP 返回 200。</li><li>CSS/JS/图片无 404。</li><li>HTTPS 证书签发后再强制开启。</li></ul></div>
+        </div>
+      </section>
+
+      <section id="docs">
+        <div class="section-head"><div><h2>Docs & References</h2><p>只保留技术文档入口。</p></div></div>
+        <div class="grid">
+          <a class="card" href="https://git-scm.com/docs" target="_blank" rel="noreferrer"><div class="icon">Git</div><h3>Git Reference</h3><p>官方 Git 命令文档和参数说明。</p><span class="meta">Open →</span></a>
+          <a class="card" href="https://learngitbranching.js.org/" target="_blank" rel="noreferrer"><div class="icon">BR</div><h3>Learn Branching</h3><p>交互式学习 merge、rebase、reset。</p><span class="meta">Open →</span></a>
+          <a class="card" href="https://developer.mozilla.org/" target="_blank" rel="noreferrer"><div class="icon">MDN</div><h3>MDN Web Docs</h3><p>HTML、CSS、JavaScript 和 Web API 参考。</p><span class="meta">Open →</span></a>
+          <a class="card" href="https://docs.github.com/en/rest" target="_blank" rel="noreferrer"><div class="icon">API</div><h3>GitHub REST API</h3><p>仓库、Pages、Actions 和自动化接口文档。</p><span class="meta">Open →</span></a>
+        </div>
+      </section>
+
+      <section id="scope">
+        <div class="section-head"><div><h2>Scope</h2><p>这个域名的边界。</p></div></div>
+        <div class="panel check"><ul><li><b>放：</b>Git、代码、开发工具、调试工具、部署文档、发布检查。</li><li><b>不放：</b>个人生活导航、媒体娱乐、后台管理、账号敏感入口。</li><li><b>原则：</b>静态、公开、轻量、可长期保活。</li></ul></div>
+      </section>
+
+      <footer>git.loc.cc · Dev Dashboard · Static source for GitHub Pages</footer>
+    </main>
+  </div>
+</body>
 </html>
